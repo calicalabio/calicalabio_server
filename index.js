@@ -11,6 +11,13 @@ dotenv.config();
 
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
+app.use((err, req, res, next) => {
+    res.status(err.statusCode || 500).json({
+        error: {
+            message: err.message
+        }
+    })
+});
 app.use(cors());
 
 app.use('/messages', messageRoutes);
